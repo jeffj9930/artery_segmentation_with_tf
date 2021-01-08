@@ -1,0 +1,128 @@
+
+def get_mdl(f1, f2, f3, f4):
+    inputs = Input(shape=img_size + (1,))
+    #x = Conv2D(input_shape=[256, 256, 1],
+    x = Conv2D(filters=f1,
+           kernel_size=5,
+           strides=2,
+           padding="same",
+           activation='relu',
+           name="Conv1")(inputs)
+    x = MaxPool2D(pool_size=2, strides=2, padding="same")(x)
+    if j>0:
+        x = Conv2D(filters=f2,
+               kernel_size=5,
+               strides=2,
+               padding="same",
+               activation='relu')(x)
+        x = MaxPool2D(pool_size=2, strides=2, padding="same")(x)
+
+    x = Conv2D(filters=f3,
+           kernel_size=3,
+           strides=1,
+           padding="same",
+           activation='relu')(x)
+    x = Conv2D(filters=f3,
+           kernel_size=3,
+           strides=1,
+           padding="same",
+           activation='relu')(x)
+    if j>2:
+        x = Conv2D(filters=f4,
+               kernel_size=1,
+               strides=1,
+               padding="same",
+               activation='relu')(x)
+    stride = [4, 16, 64]
+    conv10 = Conv2DTranspose(filters=2, kernel_size=31, strides=stride[1], padding="same")(x)
+
+    model = tf.keras.Model(inputs=[inputs], outputs=[conv10])
+    model.compile(
+        optimizer='adam',
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+        metrics=[dice_coef,'accuracy'])
+    return model
+
+
+
+CNN  16- 16- 16- 16: Epochs=30, Train accuracy=0.99633, Dice Coef=0.82700, Val Dice Coef=0.76488
+CNN  64- 16- 16- 16: Epochs=30, Train accuracy=0.99588, Dice Coef=0.80539, Val Dice Coef=0.69289
+CNN 256- 16- 16- 16: Epochs=30, Train accuracy=0.99738, Dice Coef=0.86860, Val Dice Coef=0.76581
+CNN  16- 64- 16- 16: Epochs=30, Train accuracy=0.99728, Dice Coef=0.86048, Val Dice Coef=0.72358
+CNN  64- 64- 16- 16: Epochs=30, Train accuracy=0.99803, Dice Coef=0.89440, Val Dice Coef=0.81122
+CNN 256- 64- 16- 16: Epochs=30, Train accuracy=0.99823, Dice Coef=0.90980, Val Dice Coef=0.81781
+CNN  16-256- 16- 16: Epochs=30, Train accuracy=0.99818, Dice Coef=0.90757, Val Dice Coef=0.79413
+CNN  64-256- 16- 16: Epochs=30, Train accuracy=0.99865, Dice Coef=0.93003, Val Dice Coef=0.81577
+CNN 256-256- 16- 16: Epochs=30, Train accuracy=0.99872, Dice Coef=0.93252, Val Dice Coef=0.82213
+CNN  16- 16- 64- 16: Epochs=30, Train accuracy=0.99732, Dice Coef=0.86046, Val Dice Coef=0.76068
+CNN  64- 16- 64- 16: Epochs=30, Train accuracy=0.99743, Dice Coef=0.86203, Val Dice Coef=0.76992
+CNN 256- 16- 64- 16: Epochs=30, Train accuracy=0.99764, Dice Coef=0.87470, Val Dice Coef=0.79922
+CNN  16- 64- 64- 16: Epochs=30, Train accuracy=0.99781, Dice Coef=0.87967, Val Dice Coef=0.81062
+CNN  64- 64- 64- 16: Epochs=30, Train accuracy=0.99828, Dice Coef=0.91095, Val Dice Coef=0.80681
+CNN 256- 64- 64- 16: Epochs=30, Train accuracy=0.99870, Dice Coef=0.92965, Val Dice Coef=0.81973
+CNN  16-256- 64- 16: Epochs=30, Train accuracy=0.99856, Dice Coef=0.92637, Val Dice Coef=0.84190
+CNN  64-256- 64- 16: Epochs=30, Train accuracy=0.99886, Dice Coef=0.93793, Val Dice Coef=0.83392
+CNN 256-256- 64- 16: Epochs=30, Train accuracy=0.99892, Dice Coef=0.94137, Val Dice Coef=0.83908
+CNN  16- 16-256- 16: Epochs=30, Train accuracy=0.99772, Dice Coef=0.87882, Val Dice Coef=0.77340
+CNN  64- 16-256- 16: Epochs=30, Train accuracy=0.99784, Dice Coef=0.88566, Val Dice Coef=0.77709
+CNN 256- 16-256- 16: Epochs=30, Train accuracy=0.99805, Dice Coef=0.89887, Val Dice Coef=0.77358
+CNN  16- 64-256- 16: Epochs=30, Train accuracy=0.99858, Dice Coef=0.92313, Val Dice Coef=0.78770
+CNN  64- 64-256- 16: Epochs=30, Train accuracy=0.99873, Dice Coef=0.93029, Val Dice Coef=0.83144
+CNN 256- 64-256- 16: Epochs=30, Train accuracy=0.99873, Dice Coef=0.93438, Val Dice Coef=0.83707
+CNN  16-256-256- 16: Epochs=30, Train accuracy=0.99886, Dice Coef=0.93744, Val Dice Coef=0.83362
+CNN  64-256-256- 16: Epochs=30, Train accuracy=0.99895, Dice Coef=0.94014, Val Dice Coef=0.83774
+CNN 256-256-256- 16: Epochs=30, Train accuracy=0.99908, Dice Coef=0.95044, Val Dice Coef=0.84708
+CNN  16- 16- 16- 64: Epochs=30, Train accuracy=0.99773, Dice Coef=0.88220, Val Dice Coef=0.76440
+CNN  64- 16- 16- 64: Epochs=30, Train accuracy=0.99766, Dice Coef=0.88297, Val Dice Coef=0.79721
+CNN 256- 16- 16- 64: Epochs=30, Train accuracy=0.99759, Dice Coef=0.87841, Val Dice Coef=0.76334
+CNN  16- 64- 16- 64: Epochs=30, Train accuracy=0.99844, Dice Coef=0.91646, Val Dice Coef=0.79673
+CNN  64- 64- 16- 64: Epochs=30, Train accuracy=0.99869, Dice Coef=0.92766, Val Dice Coef=0.82666
+CNN 256- 64- 16- 64: Epochs=30, Train accuracy=0.99896, Dice Coef=0.94333, Val Dice Coef=0.81239
+CNN  16-256- 16- 64: Epochs=30, Train accuracy=0.99886, Dice Coef=0.93901, Val Dice Coef=0.81975
+CNN  64-256- 16- 64: Epochs=30, Train accuracy=0.99896, Dice Coef=0.94297, Val Dice Coef=0.84534
+CNN 256-256- 16- 64: Epochs=30, Train accuracy=0.99919, Dice Coef=0.95510, Val Dice Coef=0.85052
+CNN  16- 16- 64- 64: Epochs=30, Train accuracy=0.99827, Dice Coef=0.90909, Val Dice Coef=0.80243
+CNN  64- 16- 64- 64: Epochs=30, Train accuracy=0.99836, Dice Coef=0.91327, Val Dice Coef=0.81666
+CNN 256- 16- 64- 64: Epochs=30, Train accuracy=0.99846, Dice Coef=0.92087, Val Dice Coef=0.82276
+CNN  16- 64- 64- 64: Epochs=30, Train accuracy=0.99876, Dice Coef=0.93385, Val Dice Coef=0.79147
+CNN  64- 64- 64- 64: Epochs=30, Train accuracy=0.99898, Dice Coef=0.94530, Val Dice Coef=0.84552
+CNN 256- 64- 64- 64: Epochs=30, Train accuracy=0.99910, Dice Coef=0.94969, Val Dice Coef=0.84335
+CNN  16-256- 64- 64: Epochs=30, Train accuracy=0.99904, Dice Coef=0.94926, Val Dice Coef=0.82815
+CNN  64-256- 64- 64: Epochs=30, Train accuracy=0.99908, Dice Coef=0.94831, Val Dice Coef=0.84217
+CNN 256-256- 64- 64: Epochs=30, Train accuracy=0.99928, Dice Coef=0.96528, Val Dice Coef=0.84553
+CNN  16- 16-256- 64: Epochs=30, Train accuracy=0.99832, Dice Coef=0.90654, Val Dice Coef=0.79317
+CNN  64- 16-256- 64: Epochs=30, Train accuracy=0.99866, Dice Coef=0.93111, Val Dice Coef=0.82728
+CNN 256- 16-256- 64: Epochs=30, Train accuracy=0.99870, Dice Coef=0.93328, Val Dice Coef=0.81663
+CNN  16- 64-256- 64: Epochs=30, Train accuracy=0.99889, Dice Coef=0.94102, Val Dice Coef=0.83698
+CNN  64- 64-256- 64: Epochs=30, Train accuracy=0.99912, Dice Coef=0.95221, Val Dice Coef=0.82537
+CNN 256- 64-256- 64: Epochs=30, Train accuracy=0.99916, Dice Coef=0.95559, Val Dice Coef=0.84544
+CNN  16-256-256- 64: Epochs=30, Train accuracy=0.99916, Dice Coef=0.95224, Val Dice Coef=0.83516
+CNN  64-256-256- 64: Epochs=30, Train accuracy=0.99934, Dice Coef=0.96530, Val Dice Coef=0.85160
+CNN 256-256-256- 64: Epochs=30, Train accuracy=0.99938, Dice Coef=0.96968, Val Dice Coef=0.84879
+CNN  16- 16- 16-256: Epochs=30, Train accuracy=0.99774, Dice Coef=0.87355, Val Dice Coef=0.77331
+CNN  64- 16- 16-256: Epochs=30, Train accuracy=0.99854, Dice Coef=0.92523, Val Dice Coef=0.79664
+CNN 256- 16- 16-256: Epochs=30, Train accuracy=0.99870, Dice Coef=0.92980, Val Dice Coef=0.78811
+CNN  16- 64- 16-256: Epochs=30, Train accuracy=0.99887, Dice Coef=0.93371, Val Dice Coef=0.81654
+CNN  64- 64- 16-256: Epochs=30, Train accuracy=0.99902, Dice Coef=0.94326, Val Dice Coef=0.82669
+CNN 256- 64- 16-256: Epochs=30, Train accuracy=0.99896, Dice Coef=0.94061, Val Dice Coef=0.82801
+CNN  16-256- 16-256: Epochs=30, Train accuracy=0.99901, Dice Coef=0.94138, Val Dice Coef=0.83789
+CNN  64-256- 16-256: Epochs=30, Train accuracy=0.99911, Dice Coef=0.94852, Val Dice Coef=0.84620
+CNN 256-256- 16-256: Epochs=30, Train accuracy=0.99911, Dice Coef=0.95124, Val Dice Coef=0.84007
+CNN  16- 16- 64-256: Epochs=30, Train accuracy=0.99876, Dice Coef=0.93230, Val Dice Coef=0.79787
+CNN  64- 16- 64-256: Epochs=30, Train accuracy=0.99883, Dice Coef=0.93303, Val Dice Coef=0.82977
+CNN 256- 16- 64-256: Epochs=30, Train accuracy=0.99862, Dice Coef=0.93020, Val Dice Coef=0.80323
+CNN  16- 64- 64-256: Epochs=30, Train accuracy=0.99902, Dice Coef=0.94620, Val Dice Coef=0.81578
+CNN  64- 64- 64-256: Epochs=30, Train accuracy=0.99913, Dice Coef=0.95081, Val Dice Coef=0.82968
+CNN 256- 64- 64-256: Epochs=30, Train accuracy=0.99921, Dice Coef=0.95813, Val Dice Coef=0.83248
+CNN  16-256- 64-256: Epochs=30, Train accuracy=0.99926, Dice Coef=0.95623, Val Dice Coef=0.83857
+CNN  64-256- 64-256: Epochs=30, Train accuracy=0.99933, Dice Coef=0.96541, Val Dice Coef=0.85015
+CNN 256-256- 64-256: Epochs=30, Train accuracy=0.99939, Dice Coef=0.96603, Val Dice Coef=0.85184
+CNN  16- 16-256-256: Epochs=30, Train accuracy=0.99881, Dice Coef=0.93477, Val Dice Coef=0.80889
+CNN  64- 16-256-256: Epochs=30, Train accuracy=0.99887, Dice Coef=0.93640, Val Dice Coef=0.83373
+CNN 256- 16-256-256: Epochs=30, Train accuracy=0.99887, Dice Coef=0.94297, Val Dice Coef=0.82583
+CNN  16- 64-256-256: Epochs=30, Train accuracy=0.99924, Dice Coef=0.95680, Val Dice Coef=0.83644
+CNN  64- 64-256-256: Epochs=30, Train accuracy=0.99922, Dice Coef=0.95403, Val Dice Coef=0.84192
+CNN 256- 64-256-256: Epochs=30, Train accuracy=0.99923, Dice Coef=0.95646, Val Dice Coef=0.84195
+CNN  16-256-256-256: Epochs=30, Train accuracy=0.99926, Dice Coef=0.95958, Val Dice Coef=0.84292
+CNN  64-256-256-256: Epochs=30, Train accuracy=0.99935, Dice Coef=0.96492, Val Dice Coef=0.84639
+CNN 256-256-256-256: Epochs=30, Train accuracy=0.99947, Dice Coef=0.97425, Val Dice Coef=0.84221
